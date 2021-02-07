@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include erpnext_furniture_to_go *.css
+recursive-include erpnext_furniture_to_go *.csv
+recursive-include erpnext_furniture_to_go *.html
+recursive-include erpnext_furniture_to_go *.ico
+recursive-include erpnext_furniture_to_go *.js
+recursive-include erpnext_furniture_to_go *.json
+recursive-include erpnext_furniture_to_go *.md
+recursive-include erpnext_furniture_to_go *.png
+recursive-include erpnext_furniture_to_go *.py
+recursive-include erpnext_furniture_to_go *.svg
+recursive-include erpnext_furniture_to_go *.txt
+recursive-exclude erpnext_furniture_to_go *.pyc
