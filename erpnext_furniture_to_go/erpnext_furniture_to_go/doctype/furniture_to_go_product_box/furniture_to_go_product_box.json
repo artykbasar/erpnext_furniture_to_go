@@ -1,0 +1,85 @@
+{
+ "actions": [],
+ "creation": "2021-02-07 10:31:07.244571",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "box_number",
+  "barcode",
+  "height",
+  "width",
+  "depth",
+  "unit",
+  "weight"
+ ],
+ "fields": [
+  {
+   "columns": 2,
+   "fieldname": "box_number",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Box Number",
+   "non_negative": 1
+  },
+  {
+   "columns": 2,
+   "fieldname": "barcode",
+   "fieldtype": "Barcode",
+   "in_list_view": 1,
+   "label": "Barcode"
+  },
+  {
+   "columns": 1,
+   "fieldname": "height",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Height",
+   "precision": "1"
+  },
+  {
+   "columns": 1,
+   "fieldname": "width",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Width",
+   "precision": "1"
+  },
+  {
+   "columns": 1,
+   "fieldname": "depth",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Depth",
+   "precision": "1"
+  },
+  {
+   "columns": 1,
+   "fieldname": "unit",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Unit"
+  },
+  {
+   "columns": 1,
+   "fieldname": "weight",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Weight",
+   "precision": "3"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2021-02-07 10:53:03.774305",
+ "modified_by": "Administrator",
+ "module": "Erpnext Furniture To Go",
+ "name": "Furniture To Go Product Box",
+ "owner": "Administrator",
+ "permissions": [],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}

@@ -1,0 +1,145 @@
+{
+ "actions": [],
+ "autoname": "field:product_sku",
+ "creation": "2021-02-07 02:01:57.162153",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "product_name",
+  "product_sku",
+  "main_image",
+  "next_delivery",
+  "availability",
+  "stock_level",
+  "barcode",
+  "supplier_url",
+  "column_break_5",
+  "product_images",
+  "product_attachments",
+  "product_bullet_points",
+  "sb_box",
+  "box",
+  "description"
+ ],
+ "fields": [
+  {
+   "fieldname": "product_name",
+   "fieldtype": "Data",
+   "label": "Product Name",
+   "length": 250
+  },
+  {
+   "fieldname": "product_sku",
+   "fieldtype": "Data",
+   "label": "SKU",
+   "unique": 1
+  },
+  {
+   "fieldname": "supplier_url",
+   "fieldtype": "Small Text",
+   "label": "Supplier Url"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Text Editor",
+   "label": "Description"
+  },
+  {
+   "fieldname": "barcode",
+   "fieldtype": "Barcode",
+   "label": "Barcode"
+  },
+  {
+   "fieldname": "main_image",
+   "fieldtype": "Attach Image",
+   "label": "Main Image"
+  },
+  {
+   "fieldname": "availability",
+   "fieldtype": "Data",
+   "label": "Availability"
+  },
+  {
+   "fieldname": "stock_level",
+   "fieldtype": "Data",
+   "label": "Stock Level"
+  },
+  {
+   "fieldname": "next_delivery",
+   "fieldtype": "Date",
+   "label": "Next Delivery"
+  },
+  {
+   "fieldname": "column_break_5",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "sb_box",
+   "fieldtype": "Section Break",
+   "label": "Box"
+  },
+  {
+   "fieldname": "box",
+   "fieldtype": "Table",
+   "label": "Box",
+   "options": "Furniture To Go Product Box"
+  },
+  {
+   "fieldname": "product_images",
+   "fieldtype": "Table",
+   "label": "Product Images",
+   "options": "Furniture To Go Product Images"
+  },
+  {
+   "fieldname": "product_attachments",
+   "fieldtype": "Table",
+   "label": "Product Attachments",
+   "options": "Furniture To Go Product Attachments"
+  },
+  {
+   "fieldname": "product_bullet_points",
+   "fieldtype": "Table",
+   "label": "Product Bullet Points",
+   "options": "Furniture To Go Product Bullet Points"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2021-02-07 12:09:52.416116",
+ "modified_by": "Administrator",
+ "module": "Erpnext Furniture To Go",
+ "name": "Furniture To Go Products",
+ "name_case": "UPPER CASE",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Administrator",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
