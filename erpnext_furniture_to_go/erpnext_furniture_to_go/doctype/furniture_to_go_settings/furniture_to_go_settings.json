@@ -7,7 +7,8 @@
  "field_order": [
   "enable",
   "user_name",
-  "password"
+  "password",
+  "sync_products"
  ],
  "fields": [
   {
@@ -29,12 +30,18 @@
    "fieldtype": "Password",
    "label": "Password",
    "mandatory_depends_on": "eval:doc.enable == true;"
+  },
+  {
+   "fieldname": "sync_products",
+   "fieldtype": "Button",
+   "label": "Sync Products",
+   "options": "find_new_products"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2021-02-07 01:43:59.775356",
+ "modified": "2021-02-08 10:44:32.817357",
  "modified_by": "Administrator",
  "module": "Erpnext Furniture To Go",
  "name": "Furniture To Go Settings",

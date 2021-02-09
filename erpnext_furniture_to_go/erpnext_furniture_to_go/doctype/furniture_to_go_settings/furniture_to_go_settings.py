@@ -3,8 +3,12 @@
 # For license information, please see license.txt
 
 from __future__ import unicode_literals
-# import frappe
+import frappe
+# from erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods import find_new_products
 from frappe.model.document import Document
 
 class FurnitureToGoSettings(Document):
-	pass
+	def find_new_products(self):
+		if self.enable == 1:
+			frappe.enqueue('erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods.find_new_products')
+			

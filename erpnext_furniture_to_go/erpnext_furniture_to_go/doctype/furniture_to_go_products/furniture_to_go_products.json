@@ -26,6 +26,7 @@
   {
    "fieldname": "product_name",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Product Name",
    "length": 250
   },
@@ -58,11 +59,13 @@
   {
    "fieldname": "availability",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Availability"
   },
   {
    "fieldname": "stock_level",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Stock Level"
   },
   {
@@ -106,7 +109,7 @@
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-02-07 12:09:52.416116",
+ "modified": "2021-02-09 00:41:49.623384",
  "modified_by": "Administrator",
  "module": "Erpnext Furniture To Go",
  "name": "Furniture To Go Products",

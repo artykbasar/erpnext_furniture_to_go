@@ -366,7 +366,11 @@ class F2G:
                         else:
                             box[box_number]['box_weight'] = box_weight
 
-        description = descriptions.find('strong').next_sibling
+        description = descriptions.find('strong')
+        if description:
+            description = description.next_sibling
+        else:
+            description = descriptions
         # In this HTML location we tend to find the descriptions of the product
         rex_br_search = r'<(br)\/?>'
         # Rex is looking for '<br>' or '<br\>'
