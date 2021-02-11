@@ -8,7 +8,9 @@
   "enable",
   "user_name",
   "password",
-  "sync_products"
+  "sync_products",
+  "sync_groups",
+  "sync_ranges"
  ],
  "fields": [
   {
@@ -36,12 +38,24 @@
    "fieldtype": "Button",
    "label": "Sync Products",
    "options": "find_new_products"
+  },
+  {
+   "fieldname": "sync_groups",
+   "fieldtype": "Button",
+   "label": "Sync Product Groups",
+   "options": "find_product_group"
+  },
+  {
+   "fieldname": "sync_ranges",
+   "fieldtype": "Button",
+   "label": "Sync Product Range",
+   "options": "find_product_range"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2021-02-08 10:44:32.817357",
+ "modified": "2021-02-11 16:58:28.729904",
  "modified_by": "Administrator",
  "module": "Erpnext Furniture To Go",
  "name": "Furniture To Go Settings",

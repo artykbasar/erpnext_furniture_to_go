@@ -1,8 +1,15 @@
 {
- "actions": [],
+ "actions": [
+  {
+   "action": "pass",
+   "action_type": "Server Action",
+   "label": "Add To Stock"
+  }
+ ],
  "autoname": "field:product_sku",
  "creation": "2021-02-07 02:01:57.162153",
  "doctype": "DocType",
+ "document_type": "Setup",
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
@@ -10,17 +17,29 @@
   "product_sku",
   "main_image",
   "next_delivery",
+  "f2g_group",
+  "range_name",
+  "column_break_12",
+  "hd_price",
+  "store_delivery_price",
+  "over_250",
+  "over_500",
+  "over_1000",
+  "over_2000",
+  "column_break_5",
   "availability",
   "stock_level",
   "barcode",
   "supplier_url",
-  "column_break_5",
+  "sb_product_files",
   "product_images",
   "product_attachments",
+  "sb_bullet_points",
   "product_bullet_points",
   "sb_box",
   "box",
-  "description"
+  "description",
+  "add_to_stock"
  ],
  "fields": [
   {
@@ -38,7 +57,7 @@
   },
   {
    "fieldname": "supplier_url",
-   "fieldtype": "Small Text",
+   "fieldtype": "Attach",
    "label": "Supplier Url"
   },
   {
@@ -75,7 +94,8 @@
   },
   {
    "fieldname": "column_break_5",
-   "fieldtype": "Column Break"
+   "fieldtype": "Column Break",
+   "print_hide": 1
   },
   {
    "fieldname": "sb_box",
@@ -105,11 +125,90 @@
    "fieldtype": "Table",
    "label": "Product Bullet Points",
    "options": "Furniture To Go Product Bullet Points"
+  },
+  {
+   "fieldname": "sb_product_files",
+   "fieldtype": "Section Break",
+   "label": "Product files"
+  },
+  {
+   "fieldname": "sb_bullet_points",
+   "fieldtype": "Section Break",
+   "label": "Bullet Points"
+  },
+  {
+   "columns": 1,
+   "fieldname": "hd_price",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Home Delivery Price",
+   "precision": "2",
+   "read_only": 1,
+   "width": "1"
+  },
+  {
+   "fieldname": "store_delivery_price",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Store Delivery Price",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "over_250",
+   "fieldtype": "Currency",
+   "label": "Over 250 Price",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "over_500",
+   "fieldtype": "Currency",
+   "label": "Over 500 Price",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "over_1000",
+   "fieldtype": "Currency",
+   "label": "Over 1000 Price",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "over_2000",
+   "fieldtype": "Currency",
+   "label": "Over 2000 Price",
+   "precision": "2",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_12",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "f2g_group",
+   "fieldtype": "Link",
+   "label": "F2G Group",
+   "options": "Furniture To Go Product Group"
+  },
+  {
+   "fieldname": "add_to_stock",
+   "fieldtype": "Button",
+   "label": "Add To Stock"
+  },
+  {
+   "fieldname": "range_name",
+   "fieldtype": "Link",
+   "label": "Range Name",
+   "options": "Furniture To Go Range"
   }
  ],
+ "image_field": "main_image",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-02-09 00:41:49.623384",
+ "max_attachments": 20,
+ "modified": "2021-02-11 17:04:12.350193",
  "modified_by": "Administrator",
  "module": "Erpnext Furniture To Go",
  "name": "Furniture To Go Products",
@@ -142,7 +241,10 @@
   }
  ],
  "quick_entry": 1,
+ "show_name_in_global_search": 1,
+ "show_preview_popup": 1,
  "sort_field": "modified",
  "sort_order": "DESC",
+ "title_field": "product_name",
  "track_changes": 1
 }

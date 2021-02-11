@@ -18,6 +18,7 @@ class F2G:
     submit orders to Furniture to go website"""
     def __init__(self):
         self.s = requests.Session()
+        self.main_url = 'https://furniture-to-go.co.uk/'
     #     When cass is initiated requests session is being opened.
 
     def login(self, login_user, password, url=f2g_url, post_url=f2g_url_login, header=load):
@@ -87,6 +88,47 @@ class F2G:
         for link_html in links_html:
             links.append(link_html['href'])
         return links
+
+    def range_or_category(self, key, range):
+        if not range:
+            if key == 'Ranges' or key == 'Customer Service':
+                return True
+            else:
+                return False
+        else:
+            if key == 'Ranges':
+                return False
+            else:
+                return True
+
+    def fetch_category_links(self, range=False):
+        html = self.s.get(self.main_url)
+        soup = BeautifulSoup(html.text, 'lxml')
+        nav_headers = soup.findAll('a', class_='level-top')
+        parent_category = {}
+        for index, nav_header in enumerate(nav_headers):
+            name = nav_header.find('span').text
+            parent_category[name] = index
+        nav_children = soup.findAll('ul', class_='level0')
+        product_category = {}
+        for key in parent_category.keys():
+            print(key)
+            if self.range_or_category(key, range):
+                pass
+            else:
+                for li in nav_children[parent_category[key]].findAll('li'):
+                    list_helper = []
+                    child_name = li.find('span').text
+                    link_category = li.find('a')['href']
+                    list_helper.append(link_category)
+                    product_links = self.product_link_extractor(list_helper)
+                    for product_url in product_links:
+
+                        product_category[product_url] = {
+                            "parent": key,
+                            "child": child_name,
+                        }
+        return product_category
 
     def product_link_extractor(self, range_url=None):
         """ This Function accepts Url of the Range as list and
@@ -411,7 +453,7 @@ class F2G:
             print(html.url)
             print('Stock status is {}. This link needs to be checked for errors'.
                   format(stock_status))
-        stock_dictionary = {'qty': qty,
+        stock_dictionary = {'qty': int(qty),
                             'stock_status': stock_status,
                             'next_delivery_date': next_delivery_date}
 

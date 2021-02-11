@@ -11,4 +11,14 @@ class FurnitureToGoSettings(Document):
 	def find_new_products(self):
 		if self.enable == 1:
 			frappe.enqueue('erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods.find_new_products')
+
+	def find_product_group(self):
+		if self.enable == 1:
+			frappe.enqueue('erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods.product_group_finder')
+
+	def find_product_range(self):
+		if self.enable == 1:
+			frappe.enqueue('erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods.product_range_finder')
+
+
 			

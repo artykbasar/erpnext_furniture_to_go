@@ -1,0 +1,45 @@
+{
+ "actions": [],
+ "autoname": "field:range_name",
+ "creation": "2021-02-11 15:50:26.733531",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "range_name"
+ ],
+ "fields": [
+  {
+   "fieldname": "range_name",
+   "fieldtype": "Data",
+   "label": "Range Name",
+   "unique": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2021-02-11 15:50:26.733531",
+ "modified_by": "Administrator",
+ "module": "Erpnext Furniture To Go",
+ "name": "Furniture To Go Range",
+ "name_case": "Title Case",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
