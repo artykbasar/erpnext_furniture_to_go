@@ -6,7 +6,8 @@
  "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "range_name"
+  "range_name",
+  "brand"
  ],
  "fields": [
   {
@@ -14,11 +15,17 @@
    "fieldtype": "Data",
    "label": "Range Name",
    "unique": 1
+  },
+  {
+   "fieldname": "brand",
+   "fieldtype": "Link",
+   "label": "Brand",
+   "options": "Brand"
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2021-02-11 15:50:26.733531",
+ "modified": "2021-02-12 20:32:13.052538",
  "modified_by": "Administrator",
  "module": "Erpnext Furniture To Go",
  "name": "Furniture To Go Range",

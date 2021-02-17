@@ -47,12 +47,14 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Product Name",
-   "length": 250
+   "length": 250,
+   "read_only": 1
   },
   {
    "fieldname": "product_sku",
    "fieldtype": "Data",
    "label": "SKU",
+   "read_only": 1,
    "unique": 1
   },
   {
@@ -63,7 +65,8 @@
   {
    "fieldname": "description",
    "fieldtype": "Text Editor",
-   "label": "Description"
+   "label": "Description",
+   "read_only": 1
   },
   {
    "fieldname": "barcode",
@@ -79,18 +82,21 @@
    "fieldname": "availability",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Availability"
+   "label": "Availability",
+   "read_only": 1
   },
   {
    "fieldname": "stock_level",
    "fieldtype": "Data",
    "in_list_view": 1,
-   "label": "Stock Level"
+   "label": "Stock Level",
+   "read_only": 1
   },
   {
    "fieldname": "next_delivery",
    "fieldtype": "Date",
-   "label": "Next Delivery"
+   "label": "Next Delivery",
+   "read_only": 1
   },
   {
    "fieldname": "column_break_5",
@@ -106,7 +112,8 @@
    "fieldname": "box",
    "fieldtype": "Table",
    "label": "Box",
-   "options": "Furniture To Go Product Box"
+   "options": "Furniture To Go Product Box",
+   "read_only": 1
   },
   {
    "fieldname": "product_images",
@@ -118,23 +125,27 @@
    "fieldname": "product_attachments",
    "fieldtype": "Table",
    "label": "Product Attachments",
-   "options": "Furniture To Go Product Attachments"
+   "options": "Furniture To Go Product Attachments",
+   "read_only": 1
   },
   {
    "fieldname": "product_bullet_points",
    "fieldtype": "Table",
    "label": "Product Bullet Points",
-   "options": "Furniture To Go Product Bullet Points"
+   "options": "Furniture To Go Product Bullet Points",
+   "read_only": 1
   },
   {
    "fieldname": "sb_product_files",
    "fieldtype": "Section Break",
-   "label": "Product files"
+   "label": "Product files",
+   "read_only": 1
   },
   {
    "fieldname": "sb_bullet_points",
    "fieldtype": "Section Break",
-   "label": "Bullet Points"
+   "label": "Bullet Points",
+   "read_only": 1
   },
   {
    "columns": 1,
@@ -184,13 +195,15 @@
   },
   {
    "fieldname": "column_break_12",
-   "fieldtype": "Column Break"
+   "fieldtype": "Column Break",
+   "read_only": 1
   },
   {
    "fieldname": "f2g_group",
    "fieldtype": "Link",
    "label": "F2G Group",
-   "options": "Furniture To Go Product Group"
+   "options": "Furniture To Go Product Group",
+   "read_only": 1
   },
   {
    "fieldname": "add_to_stock",
@@ -201,14 +214,15 @@
    "fieldname": "range_name",
    "fieldtype": "Link",
    "label": "Range Name",
-   "options": "Furniture To Go Range"
+   "options": "Furniture To Go Range",
+   "read_only": 1
   }
  ],
  "image_field": "main_image",
  "index_web_pages_for_search": 1,
  "links": [],
  "max_attachments": 20,
- "modified": "2021-02-11 17:04:12.350193",
+ "modified": "2021-02-11 22:57:12.957713",
  "modified_by": "Administrator",
  "module": "Erpnext Furniture To Go",
  "name": "Furniture To Go Products",

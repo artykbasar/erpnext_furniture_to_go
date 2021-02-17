@@ -13,7 +13,8 @@
   "rgt",
   "is_group",
   "old_parent",
-  "parent_f2g_product_group"
+  "parent_f2g_product_group",
+  "item_group"
  ],
  "fields": [
   {
@@ -56,12 +57,18 @@
    "fieldtype": "Link",
    "label": "Parent F2G Product Group",
    "options": "Furniture To Go Product Group"
+  },
+  {
+   "fieldname": "item_group",
+   "fieldtype": "Link",
+   "label": "Item Group",
+   "options": "Item Group"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_tree": 1,
  "links": [],
- "modified": "2021-02-10 23:15:25.780051",
+ "modified": "2021-02-12 12:22:38.251403",
  "modified_by": "Administrator",
  "module": "Erpnext Furniture To Go",
  "name": "Furniture To Go Product Group",

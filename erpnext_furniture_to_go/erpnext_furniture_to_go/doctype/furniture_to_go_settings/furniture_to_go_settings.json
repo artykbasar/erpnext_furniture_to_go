@@ -10,7 +10,16 @@
   "password",
   "sync_products",
   "sync_groups",
-  "sync_ranges"
+  "sync_ranges",
+  "sync_to_items",
+  "column_break_7",
+  "item_group",
+  "default_brand",
+  "default_supplier",
+  "default_warehouse",
+  "default_buying_price_list",
+  "default_selling_price_list",
+  "default_lead_time"
  ],
  "fields": [
   {
@@ -34,28 +43,97 @@
    "mandatory_depends_on": "eval:doc.enable == true;"
   },
   {
+   "depends_on": "eval:doc.enable == true;",
    "fieldname": "sync_products",
    "fieldtype": "Button",
    "label": "Sync Products",
    "options": "find_new_products"
   },
   {
+   "depends_on": "eval:doc.enable == true;",
    "fieldname": "sync_groups",
    "fieldtype": "Button",
    "label": "Sync Product Groups",
    "options": "find_product_group"
   },
   {
+   "depends_on": "eval:doc.enable == true;",
    "fieldname": "sync_ranges",
    "fieldtype": "Button",
    "label": "Sync Product Range",
    "options": "find_product_range"
+  },
+  {
+   "fieldname": "item_group",
+   "fieldtype": "Link",
+   "label": "Default Item Group",
+   "mandatory_depends_on": "eval:doc.enable == true;",
+   "options": "Item Group",
+   "read_only_depends_on": "eval:doc.enable == false;"
+  },
+  {
+   "fieldname": "default_supplier",
+   "fieldtype": "Link",
+   "label": "Default Supplier",
+   "mandatory_depends_on": "eval:doc.enable == true;",
+   "options": "Supplier",
+   "read_only_depends_on": "eval:doc.enable == false;"
+  },
+  {
+   "fieldname": "default_warehouse",
+   "fieldtype": "Link",
+   "label": "Default Warehouse",
+   "mandatory_depends_on": "eval:doc.enable == true;",
+   "options": "Warehouse",
+   "read_only_depends_on": "eval:doc.enable == false;"
+  },
+  {
+   "fieldname": "column_break_7",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "default_buying_price_list",
+   "fieldtype": "Link",
+   "label": "Default Buying Price List",
+   "mandatory_depends_on": "eval:doc.enable == true;",
+   "options": "Price List",
+   "read_only_depends_on": "eval:doc.enable == false;"
+  },
+  {
+   "fieldname": "default_selling_price_list",
+   "fieldtype": "Link",
+   "label": "Default Selling Price List",
+   "mandatory_depends_on": "eval:doc.enable == true;",
+   "options": "Price List",
+   "read_only_depends_on": "eval:doc.enable == false;"
+  },
+  {
+   "fieldname": "default_brand",
+   "fieldtype": "Link",
+   "label": "Default Brand",
+   "mandatory_depends_on": "eval:doc.enable == true;",
+   "options": "Brand",
+   "read_only_depends_on": "eval:doc.enable == false;"
+  },
+  {
+   "fieldname": "sync_to_items",
+   "fieldtype": "Button",
+   "label": "Sync Products To Items",
+   "options": "sync_products_to_items"
+  },
+  {
+   "fieldname": "default_lead_time",
+   "fieldtype": "Int",
+   "label": "Default Lead Time",
+   "mandatory_depends_on": "eval:doc.enable == true;",
+   "non_negative": 1,
+   "read_only_depends_on": "eval:doc.enable == false;"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2021-02-11 16:58:28.729904",
+ "modified": "2021-02-14 13:43:05.485782",
  "modified_by": "Administrator",
  "module": "Erpnext Furniture To Go",
  "name": "Furniture To Go Settings",

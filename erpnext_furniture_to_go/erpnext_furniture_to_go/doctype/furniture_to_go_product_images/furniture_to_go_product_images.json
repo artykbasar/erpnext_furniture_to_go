@@ -17,14 +17,15 @@
   },
   {
    "fieldname": "image_file",
-   "fieldtype": "Attach Image",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
    "label": "Image File"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2021-02-07 11:25:28.791266",
+ "modified": "2021-02-14 00:11:59.778801",
  "modified_by": "Administrator",
  "module": "Erpnext Furniture To Go",
  "name": "Furniture To Go Product Images",

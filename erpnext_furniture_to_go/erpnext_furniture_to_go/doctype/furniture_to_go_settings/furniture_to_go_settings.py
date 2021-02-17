@@ -20,5 +20,9 @@ class FurnitureToGoSettings(Document):
 		if self.enable == 1:
 			frappe.enqueue('erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods.product_range_finder')
 
+	def sync_products_to_items(self):
+		if self.enable == 1:
+			frappe.enqueue('erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods.f2g_to_item')
+
 
 			
