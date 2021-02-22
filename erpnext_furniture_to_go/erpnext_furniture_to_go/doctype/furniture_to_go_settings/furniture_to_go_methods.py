@@ -264,10 +264,13 @@ def find_new_products():
         print('There is no new products')
 
 def product_group_finder():
+    # print('I am here 1')
+    # print('hellooooo')
     group_data = f2g_ins.fetch_category_links()
     group_data_list = group_data.keys()
     response = frappe.db.get_list('Furniture To Go Products',fields=['name', 'supplier_url'])
     for each in response:
+        print(each)
         if each['supplier_url'] in group_data_list:
             name = each['name']
             item = frappe.get_doc('Furniture To Go Products', name)
@@ -275,16 +278,9 @@ def product_group_finder():
             group_names = group_data[each['supplier_url']]
             parent_group = group_names['parent']
             group_name = '{} - {}'.format(group_names['child'],parent_group)
-            parent_check = frappe.db.get_list('Furniture To Go Product Group', filters={'f2g_group_name': parent_group})
             child_check = frappe.db.get_list('Furniture To Go Product Group', filters={'f2g_group_name': group_name})
-            if not parent_check:
-                group.f2g_group_name = parent_group
-                group.is_group = 1
-                group.insert(ignore_permissions=True)
             if not child_check:
                 group.f2g_group_name = group_name
-                group.parent_f2g_product_group = parent_group
-                group.old_parent = parent_group
                 group.is_group = 0
                 group.insert(ignore_permissions=True)
             item.f2g_group = group_name

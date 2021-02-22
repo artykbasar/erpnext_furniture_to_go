@@ -80,12 +80,12 @@
    "read_only_depends_on": "eval:doc.enable == false;"
   },
   {
+   "depends_on": "eval:doc.enable == true;",
    "fieldname": "default_warehouse",
    "fieldtype": "Link",
    "label": "Default Warehouse",
    "mandatory_depends_on": "eval:doc.enable == true;",
-   "options": "Warehouse",
-   "read_only_depends_on": "eval:doc.enable == false;"
+   "options": "Warehouse"
   },
   {
    "fieldname": "column_break_7",
@@ -116,24 +116,25 @@
    "read_only_depends_on": "eval:doc.enable == false;"
   },
   {
+   "depends_on": "eval:doc.enable == true;",
    "fieldname": "sync_to_items",
    "fieldtype": "Button",
    "label": "Sync Products To Items",
    "options": "sync_products_to_items"
   },
   {
+   "depends_on": "eval:doc.enable == true;",
    "fieldname": "default_lead_time",
    "fieldtype": "Int",
    "label": "Default Lead Time",
    "mandatory_depends_on": "eval:doc.enable == true;",
-   "non_negative": 1,
-   "read_only_depends_on": "eval:doc.enable == false;"
+   "non_negative": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2021-02-14 13:43:05.485782",
+ "modified": "2021-02-20 07:20:35.542246",
  "modified_by": "Administrator",
  "module": "Erpnext Furniture To Go",
  "name": "Furniture To Go Settings",
