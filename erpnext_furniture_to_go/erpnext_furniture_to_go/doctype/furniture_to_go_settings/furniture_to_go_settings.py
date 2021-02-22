@@ -4,7 +4,7 @@
 
 from __future__ import unicode_literals
 import frappe
-# from erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods import find_new_products
+# import erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods as f2g
 from frappe.model.document import Document
 
 class FurnitureToGoSettings(Document):
@@ -14,15 +14,15 @@ class FurnitureToGoSettings(Document):
 
 	def find_product_group(self):
 		if self.enable == 1:
-			frappe.enqueue('erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods.product_group_finder')
+			frappe.enqueue('erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods.product_group_finder', timeout=3000)
 
 	def find_product_range(self):
 		if self.enable == 1:
-			frappe.enqueue('erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods.product_range_finder')
+			frappe.enqueue('erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods.product_range_finder', timeout=3000)
 
 	def sync_products_to_items(self):
 		if self.enable == 1:
-			frappe.enqueue('erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods.f2g_to_item')
+			frappe.enqueue('erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods.f2g_to_item', timeout=3000)
 
 
 			
