@@ -18,7 +18,6 @@ def add_products_to_items():
     f2g_sku = get_f2g_product_list()
     add_f2g_sku_to_items(f2g_sku)
 
-
 def add_f2g_sku_to_items(f2g_sku):
     if type(f2g_sku) is list:
         pass
@@ -32,7 +31,138 @@ def add_f2g_sku_to_items(f2g_sku):
             }, 
             fields=['parent'])
         if item_check:
-            pass
+            save_status = False
+            f2g_settings = frappe.get_doc('Furniture To Go Settings')
+            f2g_item = frappe.get_doc('Furniture To Go Products', each)
+            item_code = item_check[0]['parent']
+            item = frappe.get_doc('Item', item_code)
+            new_slideshow = frappe.new_doc('Website Slideshow')
+            ####################
+            item_name = f2g_item.product_name
+            #
+            supplier_part_no = f2g_item.product_sku
+            #
+            image = f2g_item.main_image
+            #
+            f2g_group = f2g_item.f2g_group
+            if not f2g_group:
+                f2g_group = f2g_settings.item_group
+            else:
+                f2g_group = frappe.get_doc('Furniture To Go Product Group',f2g_group).item_group
+                if not f2g_group:
+                    f2g_group = f2g_settings.item_group
+            #    
+            f2g_range = f2g_item.range_name
+            if not f2g_range:
+                f2g_range = f2g_settings.default_brand
+            else:
+                f2g_range = frappe.get_doc('Furniture To Go Range',f2g_range).brand
+                if not f2g_range:
+                    f2g_range = f2g_settings.default_brand
+            #
+            stock = int(f2g_item.stock_level)
+            #
+            next_delivery = f2g_item.next_delivery
+            default_lead_time = int(f2g_settings.default_lead_time)
+            today = datetime.datetime.today().date()
+            lead_time = 365
+            if next_delivery:
+                lead_time = next_delivery - today
+                lead_time = lead_time.days + default_lead_time
+            elif stock > 0:
+                lead_time = default_lead_time
+            #
+            description = f2g_item.description
+            #
+            item_box = f2g_item.box
+            #
+            default_warehouse = f2g_settings.default_warehouse
+            #
+            images = f2g_item.product_images
+
+            ##################################    
+            if item.item_name != item_name:
+                item.item_name = item_name
+                save_status = True
+            if item.brand != f2g_range:
+                item.brand = f2g_range
+                save_status = True
+            if item.description != description:
+                item.description = description
+                save_status = True
+            if item.image != image:
+                item.image = image
+                save_status = True
+            if item.item_group != f2g_group:
+                item.item_group = f2g_group
+                save_status = True
+            if item_box:
+                for each_item_box in item_box:
+                    if item.item_box:
+                        box = item.item_box[each_item_box.idx - 1]
+                        if box.box_ean != each_item_box.barcode:
+                            box.box_ean = each_item_box.barcode
+                            save_status = True
+                        if float(box.box_height) != float(each_item_box.height):
+                            box.box_height = float(each_item_box.height)
+                            save_status = True
+                        if float(box.box_width) != float(each_item_box.width):
+                            box.box_width = float(each_item_box.width)
+                            save_status = True
+                        if float(box.box_depth) != float(each_item_box.depth):
+                            box.box_depth = float(each_item_box.depth)
+                            save_status = True
+                        if box.box_dim_unit != each_item_box.unit:
+                            box.box_dim_unit = each_item_box.unit
+                            save_status = True
+                        if float(box.box_weight) != float(each_item_box.weight):
+                            box.box_weight = each_item_box.weight
+                            save_status = True
+                    else:
+                        item.append('item_box',{
+                            'box_number': each_item_box.box_number,
+                            'box_ean': each_item_box.barcode,
+                            'box_height': each_item_box.height,
+                            'box_width': each_item_box.width,
+                            'box_depth': each_item_box.depth,
+                            'box_dim_unit': each_item_box.unit,
+                            'box_weight': each_item_box.weight
+                        })
+                        save_status = True
+            if int(item.lead_time_days) != int(lead_time):
+                item.lead_time_days = lead_time
+                save_status = True
+            # item.show_in_website = 1
+            if item.website_image != image:
+                item.website_image = image
+                save_status = True
+            if item.website_warehouse != default_warehouse:
+                item.website_warehouse = default_warehouse
+                save_status = True
+            slideshow_image_list = []
+            if item.slideshow:
+                web_slideshow = frappe.get_doc('Website Slideshow', item.slideshow)
+                slideshow_images = web_slideshow.slideshow_items
+                for slideshow_image in slideshow_images:
+                    slideshow_image_list.append(slideshow_image.image)
+                for each_image in images:
+                    if each_image.image_file not in slideshow_image_list:
+                        web_slideshow.append('slideshow_items',{
+                            'image': each_image.image_file
+                        })
+                        save_status = True
+            elif not item.slideshow and images:
+                slideshow_name = "{} - Product Slideshow".format(item_code) 
+                new_slideshow.slideshow_name = slideshow_name
+                for each_image in images:
+                    new_slideshow.append('slideshow_items',{
+                        "image": each_image.image_file
+                    })
+                new_slideshow.insert(ignore_permissions=True)
+                item.slideshow = slideshow_name
+                save_status = True
+            if save_status:
+                inserted_item.save(ignore_permissions=True)
         else:
             f2g_settings = frappe.get_doc('Furniture To Go Settings')
             f2g_item = frappe.get_doc('Furniture To Go Products', each)
@@ -121,8 +251,6 @@ def add_f2g_sku_to_items(f2g_sku):
             inserted_item.save(ignore_permissions=True)
             print(inserted_item.item_code)
 
-            
-
 def get_f2g_product_list():
     response = frappe.db.get_list('Furniture To Go Products')
     sku_list = []
@@ -163,7 +291,6 @@ def add_item_box_to_item():
             doc_2.insert(ignore_permissions=True)
     else:
         print('Item Box Doctype has not been created, Please Create it Fist')
-
 
 def create_item_box():
     item_box_check = frappe.db.exists('DocType', 'Item Box')
@@ -234,13 +361,12 @@ def create_item_box():
                 {"label": "Weight",
                 "fieldtype": "Float",
                 'precision': 3,
-                'fieldname': 'box_wieght',
+                'fieldname': 'box_weight',
                 'in_list_view': 1,
                 'columns': 1
             })
         doc.document_type = 'Document'
         doc.insert(ignore_permissions=True)
-
 
 def find_new_products():
     list_of_product = f2g_ins.product_link_extractor()
@@ -588,6 +714,3 @@ def sync_product(link, name):
     # print(product_details)
     if edited:
         item.save(ignore_permissions=True)
-
-
-

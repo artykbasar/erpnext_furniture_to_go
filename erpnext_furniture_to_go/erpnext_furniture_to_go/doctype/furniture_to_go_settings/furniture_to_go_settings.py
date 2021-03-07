@@ -24,5 +24,3 @@ class FurnitureToGoSettings(Document):
 		if self.enable == 1:
 			frappe.enqueue('erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods.f2g_to_item', timeout=3000)
 
-
-			
