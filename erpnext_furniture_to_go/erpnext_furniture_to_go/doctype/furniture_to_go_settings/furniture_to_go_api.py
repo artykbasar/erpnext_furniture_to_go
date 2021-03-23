@@ -438,9 +438,12 @@ class F2G:
                                   r'(awaiting\s*delivery\s*date)|' \
                                   r'(next\s*delivery)\b\s*:?\s*([\d]{2})' \
                                   r'(-|\/|\\)?([\d]{2})(-|\/|\\)?([\d]{4})'
-        stock = list(re.findall(rex_stock_status_search,
-                                available_stock,
-                                re.IGNORECASE)[0])
+        if available_stock:
+            stock = list(re.findall(rex_stock_status_search,
+                                    available_stock,
+                                    re.IGNORECASE)[0])
+        else:
+            stock = ['', '', 'awaiting delivery date']
         if 'stock' in stock[0].lower():
             stock_status = 'In Stock'
             qty = stock[1]
@@ -502,12 +505,10 @@ class F2G:
         image_list = []
 
         try:
-            product_images_html = soup.find('div',
-                                            class_='more-views')
-            product_image_links = product_images_html.findAll('a', href=True)
-            
+            product_images_html = soup.find('div', class_='product-image-gallery')
+            product_image_links = product_images_html.findAll('img')
             for image in product_image_links:
-                image_link = image['href']
+                image_link = image['data-zoom-image']
                 image_list.append(image_link)
         except AttributeError:
             pass

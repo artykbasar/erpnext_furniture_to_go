@@ -15,6 +15,7 @@
   "auto_sync",
   "sync_frequency",
   "column_break_7",
+  "default_company",
   "item_group",
   "default_brand",
   "default_supplier",
@@ -146,12 +147,20 @@
    "fieldname": "auto_sync",
    "fieldtype": "Check",
    "label": "Auto Sync"
+  },
+  {
+   "fieldname": "default_company",
+   "fieldtype": "Link",
+   "label": "Default Company",
+   "mandatory_depends_on": "eval:doc.enable == true;",
+   "options": "Company",
+   "read_only_depends_on": "eval:doc.enable == false;"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2021-02-25 12:24:48.929047",
+ "modified": "2021-03-21 17:29:37.758192",
  "modified_by": "Administrator",
  "module": "Erpnext Furniture To Go",
  "name": "Furniture To Go Settings",

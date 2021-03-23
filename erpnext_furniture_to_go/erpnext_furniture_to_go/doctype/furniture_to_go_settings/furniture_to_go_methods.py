@@ -378,11 +378,13 @@ def find_new_products():
                                         }
                                     )
         if not response:
+            print(each)
             new_product_links.append(each)
         else:
             for name in response:
                 item_code = name['name']
-                frappe.enqueue('erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods.sync_product', link=each, name=item_code)
+                sync_product(link=each, name=item_code)
+                # frappe.enqueue('erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods.sync_product', link=each, name=item_code)
 
     if new_product_links:        
         import_products_list(new_product_links)
@@ -390,8 +392,6 @@ def find_new_products():
         print('There is no new products')
 
 def product_group_finder():
-    # print('I am here 1')
-    # print('hellooooo')
     group_data = f2g_ins.fetch_category_links()
     group_data_list = group_data.keys()
     response = frappe.db.get_list('Furniture To Go Products',fields=['name', 'supplier_url'])
@@ -434,7 +434,8 @@ def product_range_finder():
     
 def import_products_list(product_links):
     for product_link in product_links:
-        frappe.enqueue('erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods.import_product',product_link=product_link)
+        import_product(product_link=product_link)
+        # frappe.enqueue('erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods.import_product',product_link=product_link)
 
 def import_product(product_link):
     product_details = f2g_ins.product_data_extractor(product_link)
@@ -458,6 +459,7 @@ def import_product(product_link):
     item.barcode = product_details['ean']
     if product_details['box']:
         box_keys = product_details["box"].keys()
+        box_name = 1
         for box_key in box_keys:
             height, width, length, unit, weight, box_ean = ['', '', '', '', '', '']
             if product_details['box'][box_key].get('box_dimensions'):
@@ -469,7 +471,7 @@ def import_product(product_link):
                 weight = product_details['box'][box_key]['box_weight']
             if product_details['box'][box_key].get('box_ean_code'):
                 box_ean = product_details['box'][box_key]['box_ean_code']
-            box_name = box_key.replace('box_','')
+            # box_name = box_key.replace('box_','')
             item.append('box',
                         {'box_number': box_name,
                         'barcode': box_ean,
@@ -478,6 +480,7 @@ def import_product(product_link):
                         'depth': length,
                         'unit': unit,
                         'weight': weight})
+            box_name += 1
     if product_details['product_bullet_points']:
         for bullet_point in product_details['product_bullet_points']:
             item.append('product_bullet_points',{'bullet_point': bullet_point})
@@ -515,6 +518,7 @@ def no_change(field_name):
 
 def sync_product(link, name):
     product_details = f2g_ins.product_data_extractor(link)
+    print(product_details)
     edited = False
     item = frappe.get_doc('Furniture To Go Products', name)
     # product_sku is being compared in F2G site. If there are any changes it will be changed to New value.
@@ -557,6 +561,7 @@ def sync_product(link, name):
     # Box is being compared in F2G site. If there are any changes it will be changed to New value.
     if product_details['box']:
         box_keys = product_details["box"].keys()
+        box_int = 0
         for box_key in box_keys:
             height, width, length, unit, weight, box_ean = ['', '', '', '', '', '']
             if product_details['box'][box_key].get('box_dimensions'):
@@ -568,39 +573,46 @@ def sync_product(link, name):
                 weight = product_details['box'][box_key]['box_weight']
             if product_details['box'][box_key].get('box_ean_code'):
                 box_ean = product_details['box'][box_key]['box_ean_code']
-            box_name = box_key.replace('box_','')
-            box_int = int(box_name)-1
+            # box_name = box_key.replace('box_','')
+            # box_int = int(box_name)-1
+            print(box_int)
             if item.box[box_int]:
                 # Box height is being compared in F2G site. If there are any changes it will be changed to New value.
-                if float(item.box[box_int].height) == float(height):
-                    no_change('height')
-                else:
-                    item.box[box_int].heigt = height
-                    edited = True
+                # print(height)
+                if height:
+                    if float(item.box[box_int].height) == float(height):
+                        no_change('height')
+                    else:
+                        item.box[box_int].heigt = height
+                        edited = True
                 # Box width is being compared in F2G site. If there are any changes it will be changed to New value.
-                if float(item.box[box_int].width) == float(width):
-                    no_change('width')
-                else:
-                    item.box[box_int].width = width
-                    edited = True
+                if width:
+                    if float(item.box[box_int].width) == float(width):
+                        no_change('width')
+                    else:
+                        item.box[box_int].width = width
+                        edited = True
                 # Box depth is being compared in F2G site. If there are any changes it will be changed to New value.
-                if float(item.box[box_int].depth) == float(length):
-                    no_change('depth')
-                else:
-                    item.box[box_int].depth = length
-                    edited = True
+                if length:
+                    if float(item.box[box_int].depth) == float(length):
+                        no_change('depth')
+                    else:
+                        item.box[box_int].depth = length
+                        edited = True
                 # Box unit is being compared in F2G site. If there are any changes it will be changed to New value.
-                if item.box[box_int].unit == unit:
-                    no_change('unit')
-                else:
-                    item.box[box_int].unit = unit
-                    edited = True
+                if unit:
+                    if item.box[box_int].unit == unit:
+                        no_change('unit')
+                    else:
+                        item.box[box_int].unit = unit
+                        edited = True
                 # Box weight is being compared in F2G site. If there are any changes it will be changed to New value.
-                if float(item.box[box_int].weight) == float(weight):
-                    no_change('weight')
-                else:
-                    item.box[box_int].weight = weight
-                    edited = True
+                if weight:
+                    if float(item.box[box_int].weight) == float(weight):
+                        no_change('weight')
+                    else:
+                        item.box[box_int].weight = weight
+                        edited = True
             else:
                 # If this box was not imported before, it will be imported.        
                 item.append('box',
@@ -612,6 +624,7 @@ def sync_product(link, name):
                             'unit': unit,
                             'weight': weight})
                 edited = True
+            box_int += 1
     # Requsting from database bullet_points for the each item.
     bullet_check_tuples = frappe.db.get_list('Furniture To Go Product Bullet Points',
                                         filters={
@@ -646,9 +659,10 @@ def sync_product(link, name):
                                                 'attachment_file': product_file['link']})
                 edited = True
     images = product_details['product_images']
+    print(images)
     if images:
         main_image = product_details['product_images'][0]
-        if main_image in item.main_image:
+        if main_image == item.main_image:
             no_change('main_image')
         else:
             item.main_image = product_details['product_images'][0]

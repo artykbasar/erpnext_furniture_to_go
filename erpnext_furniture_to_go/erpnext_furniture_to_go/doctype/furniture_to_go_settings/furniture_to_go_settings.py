@@ -10,7 +10,7 @@ from frappe.model.document import Document
 class FurnitureToGoSettings(Document):
 	def find_new_products(self):
 		if self.enable == 1:
-			frappe.enqueue('erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods.find_new_products')
+			frappe.enqueue('erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods.find_new_products', timeout=3000)
 
 	def find_product_group(self):
 		if self.enable == 1:
