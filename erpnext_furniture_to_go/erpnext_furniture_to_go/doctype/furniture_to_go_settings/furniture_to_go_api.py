@@ -157,6 +157,9 @@ class F2G:
 
         html = self.s.get(link)
         # Gets response of the url from Furniture to go
+        if html.status_code != 200:
+            data = {'status': html.status_code}
+            return data
         soup = BeautifulSoup(html.text, 'lxml')
         # Parses the html request
         sku = soup.find('div', class_="sku").text.split('SKU: ')[1].strip()
@@ -516,6 +519,7 @@ class F2G:
         # print(image_list)
 
         data = {
+            'status': html.status_code,
             'product_name': product_name,
             'prices': price_list,
             'stock': stock_dictionary,

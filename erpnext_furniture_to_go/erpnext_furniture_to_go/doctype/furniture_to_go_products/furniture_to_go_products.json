@@ -19,6 +19,7 @@
   "next_delivery",
   "f2g_group",
   "range_name",
+  "discontinued",
   "column_break_12",
   "hd_price",
   "store_delivery_price",
@@ -216,13 +217,19 @@
    "label": "Range Name",
    "options": "Furniture To Go Range",
    "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "discontinued",
+   "fieldtype": "Check",
+   "label": "Discontinued"
   }
  ],
  "image_field": "main_image",
  "index_web_pages_for_search": 1,
  "links": [],
  "max_attachments": 20,
- "modified": "2021-02-11 22:57:12.957713",
+ "modified": "2021-03-23 10:19:06.655552",
  "modified_by": "Administrator",
  "module": "Erpnext Furniture To Go",
  "name": "Furniture To Go Products",

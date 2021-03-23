@@ -14,6 +14,7 @@
   "sync_to_items",
   "auto_sync",
   "sync_frequency",
+  "tester1",
   "column_break_7",
   "default_company",
   "item_group",
@@ -136,10 +137,10 @@
   {
    "depends_on": "eval:doc.enable == true && doc.auto_sync == true;",
    "fieldname": "sync_frequency",
-   "fieldtype": "Select",
+   "fieldtype": "Table",
    "label": "How often",
    "mandatory_depends_on": "eval:doc.enable == true && doc.auto_sync == true;",
-   "options": "4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14\n15\n16\n17\n18\n19\n20\n21\n22\n23\n24"
+   "options": "F2G Daily Schedule"
   },
   {
    "default": "0",
@@ -155,12 +156,18 @@
    "mandatory_depends_on": "eval:doc.enable == true;",
    "options": "Company",
    "read_only_depends_on": "eval:doc.enable == false;"
+  },
+  {
+   "fieldname": "tester1",
+   "fieldtype": "Button",
+   "label": "tester",
+   "options": "tester"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2021-03-21 17:29:37.758192",
+ "modified": "2021-03-23 13:51:31.535090",
  "modified_by": "Administrator",
  "module": "Erpnext Furniture To Go",
  "name": "Furniture To Go Settings",

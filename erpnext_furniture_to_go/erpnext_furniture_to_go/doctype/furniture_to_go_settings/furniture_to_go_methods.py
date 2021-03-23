@@ -1,5 +1,7 @@
 from __future__ import unicode_literals
 import frappe, time, dateutil, math, csv, datetime
+from frappe.utils import (flt, getdate, get_url, now,
+	nowtime, get_time, today, get_datetime, add_days)
 from six import StringIO
 import erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_api as f2g
 from frappe import _
@@ -8,6 +10,32 @@ from frappe import _
 user_details = frappe.get_doc('Furniture To Go Settings')
 f2g_ins = f2g.F2G()
 f2g_ins.login(user_details.user_name, user_details.get_password('password'))
+
+def tester():
+    scheduled_f2g_sync()
+
+def scheduled_f2g_sync():
+    '''This function syncs existing F2G product with F2G website'''
+    products = frappe.db.get_list('Furniture To Go Products',
+                                    fields=['supplier_url', 
+                                            'discontinued',
+                                            'name'])
+    for product in products:
+        if not product.discontinued:
+            sync_product(product.supplier_url, product.name)
+
+def scheduled_sync():
+    f2g_settings = frappe.get_doc('Furniture To Go Settings')
+    if f2g_settings.auto_sync:
+        scheduled_times = f2g_settings.sync_frequency
+        if scheduled_times:
+            for scheduled_time in scheduled_times:
+                start_time = datetime.datetime.strptime(scheduled_time.time, '%H:%M:%S')
+                end_time = start_time + datetime.timedelta(hours=1)
+                end_time = end_time.time()
+                if (get_time(nowtime()) >= get_time(start_time) and 
+                    get_time(nowtime()) <= get_time(end_time)):
+                    scheduled_f2g_sync()
 
 def f2g_to_item():
     create_item_box()
@@ -391,6 +419,7 @@ def find_new_products():
     else:
         print('There is no new products')
 
+
 def product_group_finder():
     group_data = f2g_ins.fetch_category_links()
     group_data_list = group_data.keys()
@@ -519,6 +548,12 @@ def no_change(field_name):
 def sync_product(link, name):
     product_details = f2g_ins.product_data_extractor(link)
     print(product_details)
+    if product_details['status'] != 200:
+        print(product_details['status'])
+        item = frappe.get_doc('Furniture To Go Products', name)
+        if time:
+            item.discontinued = 1
+        return
     edited = False
     item = frappe.get_doc('Furniture To Go Products', name)
     # product_sku is being compared in F2G site. If there are any changes it will be changed to New value.
@@ -575,7 +610,7 @@ def sync_product(link, name):
                 box_ean = product_details['box'][box_key]['box_ean_code']
             # box_name = box_key.replace('box_','')
             # box_int = int(box_name)-1
-            print(box_int)
+            # print(box_int)
             if item.box[box_int]:
                 # Box height is being compared in F2G site. If there are any changes it will be changed to New value.
                 # print(height)
@@ -659,7 +694,7 @@ def sync_product(link, name):
                                                 'attachment_file': product_file['link']})
                 edited = True
     images = product_details['product_images']
-    print(images)
+    # print(images)
     if images:
         main_image = product_details['product_images'][0]
         if main_image == item.main_image:
