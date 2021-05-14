@@ -22,6 +22,7 @@ def scheduled_f2g_sync():
                                             'name'])
     for product in products:
         if not product.discontinued:
+            print(product.supplier_url, product.name)
             sync_product(product.supplier_url, product.name)
 
 def scheduled_sync():
@@ -35,7 +36,8 @@ def scheduled_sync():
                 end_time = end_time.time()
                 if (get_time(nowtime()) >= get_time(start_time) and 
                     get_time(nowtime()) <= get_time(end_time)):
-                    scheduled_f2g_sync()
+                    # scheduled_f2g_sync()
+                    frappe.enqueue('erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods.scheduled_f2g_sync', timeout=7200)
 
 def f2g_to_item():
     create_item_box()
@@ -553,6 +555,7 @@ def sync_product(link, name):
         item = frappe.get_doc('Furniture To Go Products', name)
         if time:
             item.discontinued = 1
+            item.save(ignore_permissions=True)
         return
     edited = False
     item = frappe.get_doc('Furniture To Go Products', name)
@@ -608,12 +611,8 @@ def sync_product(link, name):
                 weight = product_details['box'][box_key]['box_weight']
             if product_details['box'][box_key].get('box_ean_code'):
                 box_ean = product_details['box'][box_key]['box_ean_code']
-            # box_name = box_key.replace('box_','')
-            # box_int = int(box_name)-1
-            # print(box_int)
-            if item.box[box_int]:
+            if box_int < len(item.box):
                 # Box height is being compared in F2G site. If there are any changes it will be changed to New value.
-                # print(height)
                 if height:
                     if float(item.box[box_int].height) == float(height):
                         no_change('height')
@@ -651,7 +650,7 @@ def sync_product(link, name):
             else:
                 # If this box was not imported before, it will be imported.        
                 item.append('box',
-                            {'box_number': box_name,
+                            {'box_number': box_int + 1,
                             'barcode': box_ean,
                             'height': height,
                             'width': width,
