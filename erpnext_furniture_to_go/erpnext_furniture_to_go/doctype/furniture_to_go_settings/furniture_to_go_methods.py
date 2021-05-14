@@ -12,7 +12,8 @@ f2g_ins = f2g.F2G()
 f2g_ins.login(user_details.user_name, user_details.get_password('password'))
 
 def tester():
-    scheduled_f2g_sync()
+    print('it is working')
+    # scheduled_f2g_sync()
 
 def scheduled_f2g_sync():
     '''This function syncs existing F2G product with F2G website'''

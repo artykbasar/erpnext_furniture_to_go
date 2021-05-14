@@ -104,12 +104,17 @@ fixtures = ['Custom Field']
 # ---------------
 
 scheduler_events = {
+	"cron": {
+		"* * * * *": [
+			"erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods.tester",
+		]
+	},
 	"all": [
-		# "erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods.tester"
+		"erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods.tester"
 	],
 	"daily": [],
 	"hourly": [
-		"erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods.scheduled_sync"
+		"erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods.scheduled_sync"
 	],
 	"weekly": [],
 	"monthly": []
