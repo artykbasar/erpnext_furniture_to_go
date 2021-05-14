@@ -23,7 +23,6 @@ def scheduled_f2g_sync():
                                             'name'])
     for product in products:
         if not product.discontinued:
-            print(product.supplier_url, product.name)
             sync_product(product.supplier_url, product.name)
 
 def scheduled_sync():
@@ -550,7 +549,7 @@ def no_change(field_name):
 
 def sync_product(link, name):
     product_details = f2g_ins.product_data_extractor(link)
-    print(product_details)
+    print(link, name)
     if product_details['status'] != 200:
         print(product_details['status'])
         item = frappe.get_doc('Furniture To Go Products', name)
