@@ -8,22 +8,27 @@ import frappe
 from frappe.model.document import Document
 
 class FurnitureToGoSettings(Document):
+	@frappe.whitelist()
 	def find_new_products(self):
 		if self.enable == 1:
 			frappe.enqueue('erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods.find_new_products', timeout=3000)
 
+	@frappe.whitelist()
 	def find_product_group(self):
 		if self.enable == 1:
 			frappe.enqueue('erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods.product_group_finder', timeout=3000)
 
+	@frappe.whitelist()
 	def find_product_range(self):
 		if self.enable == 1:
 			frappe.enqueue('erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods.product_range_finder', timeout=3000)
 
+	@frappe.whitelist()
 	def sync_products_to_items(self):
 		if self.enable == 1:
-			frappe.enqueue('erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods.f2g_to_item', timeout=3000)
-
+			frappe.enqueue('erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods.f2g_to_item', timeout=30000)
+	
+	@frappe.whitelist()
 	def tester(self):
 		if self.enable == 1:
 			frappe.enqueue('erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods.tester', timeout=7200)

@@ -163,6 +163,14 @@ def add_f2g_sku_to_items(f2g_sku):
                 item.lead_time_days = lead_time
                 save_status = True
             # item.show_in_website = 1
+            if stock > 0:
+                if item.show_in_website != 1:
+                    item.show_in_website = 1
+                    save_status = True
+            else:
+                if item.show_in_website != 0:
+                    item.show_in_website = 0
+                    save_status = True
             if item.website_image != image:
                 item.website_image = image
                 save_status = True
@@ -192,7 +200,7 @@ def add_f2g_sku_to_items(f2g_sku):
                 item.slideshow = slideshow_name
                 save_status = True
             if save_status:
-                inserted_item.save(ignore_permissions=True)
+                item.save(ignore_permissions=True)
         else:
             f2g_settings = frappe.get_doc('Furniture To Go Settings')
             f2g_item = frappe.get_doc('Furniture To Go Products', each)
@@ -265,7 +273,10 @@ def add_f2g_sku_to_items(f2g_sku):
                         'box_weight': each_item_box.weight
                     })
             new_item.lead_time_days = lead_time
-            new_item.show_in_website = 1
+            if stock > 0:
+                new_item.show_in_website = 1
+            else:
+                new_item.show_in_website = 0
             new_item.website_image = image
             new_item.website_warehouse = default_warehouse
             inserted_item = new_item.insert(ignore_permissions=True)
