@@ -16,6 +16,7 @@
   "product_name",
   "product_sku",
   "main_image",
+  "f2g_main_image",
   "next_delivery",
   "f2g_group",
   "range_name",
@@ -223,13 +224,18 @@
    "fieldname": "discontinued",
    "fieldtype": "Check",
    "label": "Discontinued"
+  },
+  {
+   "fieldname": "f2g_main_image",
+   "fieldtype": "Attach Image",
+   "label": "F2G Main Image"
   }
  ],
  "image_field": "main_image",
  "index_web_pages_for_search": 1,
  "links": [],
  "max_attachments": 20,
- "modified": "2021-03-23 10:19:06.655552",
+ "modified": "2021-06-20 12:53:31.642150",
  "modified_by": "Administrator",
  "module": "Erpnext Furniture To Go",
  "name": "Furniture To Go Products",

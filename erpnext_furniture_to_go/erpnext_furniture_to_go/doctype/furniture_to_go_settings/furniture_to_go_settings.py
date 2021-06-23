@@ -29,7 +29,17 @@ class FurnitureToGoSettings(Document):
 			frappe.enqueue('erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods.f2g_to_item', timeout=30000)
 	
 	@frappe.whitelist()
+	def auto_fill_defaults(self):
+		if self.enable == 1:
+			from erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods import default_f2g_values
+			default_f2g_values()
+			self.reload()
+	
+	@frappe.whitelist()
 	def tester(self):
 		if self.enable == 1:
-			frappe.enqueue('erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods.tester', timeout=7200)
+			from erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods import default_f2g_values
+			default_f2g_values()
+			# frappe.enqueue('erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods.tester', timeout=7200)
+			self.reload()
 

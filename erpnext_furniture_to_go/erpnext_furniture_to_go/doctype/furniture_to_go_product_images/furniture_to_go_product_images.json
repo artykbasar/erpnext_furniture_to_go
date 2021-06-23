@@ -6,7 +6,8 @@
  "engine": "InnoDB",
  "field_order": [
   "image_name",
-  "image_file"
+  "image_file",
+  "f2g_image_file"
  ],
  "fields": [
   {
@@ -21,12 +22,18 @@
    "fieldtype": "Attach",
    "in_list_view": 1,
    "label": "Image File"
+  },
+  {
+   "fieldname": "f2g_image_file",
+   "fieldtype": "Attach",
+   "in_list_view": 1,
+   "label": "F2G Image File"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2021-03-22 19:27:54.475606",
+ "modified": "2021-06-20 14:20:05.420284",
  "modified_by": "Administrator",
  "module": "Erpnext Furniture To Go",
  "name": "Furniture To Go Product Images",

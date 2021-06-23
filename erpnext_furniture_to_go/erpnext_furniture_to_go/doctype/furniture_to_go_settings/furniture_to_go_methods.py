@@ -2,18 +2,104 @@ from __future__ import unicode_literals
 import frappe, time, dateutil, math, csv, datetime
 from frappe.utils import (flt, getdate, get_url, now,
 	nowtime, get_time, today, get_datetime, add_days)
-from six import StringIO
+from six import BytesIO
 import erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_api as f2g
 from frappe import _
+from frappe.core.doctype.file.file import get_random_filename, get_extension, strip, unquote, Image, File
+import requests
 
 
 user_details = frappe.get_doc('Furniture To Go Settings')
 f2g_ins = f2g.F2G()
 f2g_ins.login(user_details.user_name, user_details.get_password('password'))
 
+def get_web_image(file_url, filename=None):
+	# download
+    file_url = frappe.utils.get_url(file_url)
+    r = requests.get(file_url, stream=True)
+    try:
+        r.raise_for_status()
+    except requests.exceptions.HTTPError as e:
+        if "404" in e.args[0]:
+            frappe.msgprint(_("File '{0}' not found").format(file_url))
+        else:
+            frappe.msgprint(_("Unable to read file format for {0}").format(file_url))
+        raise
+    image = r.content
+    try:
+        if not filename:
+            filename, extn = file_url.rsplit("/", 1)[1].rsplit(".", 1)
+        else:    
+            filename, extn = r.headers['Content-Disposition'].rsplit('=', 1)[1].rsplit(".", 1)
+    except ValueError:
+		# the case when the file url doesn't have filename or extension
+		# but is fetched due to a query string. example: https://encrypted-tbn3.gstatic.com/images?q=something
+        filename = get_random_filename()
+        extn = "pdf"
+    # extn = get_extension(filename, extn, r.content)
+    filename = "{}.{}".format(filename, extn)
+    filename1 = "/files/" + strip(unquote(filename))
+    return image, filename1, extn, filename
+
+def download_file(file_url, folder="Home/product_images", filename=None):
+    image, filepath, extn, filename = get_web_image(file_url, filename=filename)
+    file = frappe.new_doc('File')
+    file.file_name = filename
+    file.content = image
+    file.folder = folder
+    saved_file = file.insert(ignore_permissions=True, ignore_if_duplicate=True)
+    ret_dict = {'file_name': saved_file.file_name, 'file_url': saved_file.file_url}
+    print(ret_dict)
+    return ret_dict
+
+def default_f2g_values():
+    settings = frappe.get_doc('Furniture To Go Settings')
+    settings.enable = 1
+    settings.item_group = "Products"
+    settings.default_lead_time = 5
+    company_check = frappe.db.exists('Company', 'Furniture To Go')
+    if not company_check:
+        new_company = frappe.new_doc('Company')
+        new_company.company_name = "Furniture To Go"
+        new_company.abbr = 'F2G'
+        new_company.domain = 'Distribution'
+        new_company.default_currency = 'GBP'
+        new_company.country = "United Kingdom"
+        new_company.create_chart_of_accounts_based_on = 'Standard Template'
+        new_company.chart_of_accounts = 'Standard'
+        new_company.phone_no = "02380517067"
+        new_company.fax = "02380051074"
+        new_company.email = "info@furniture-to-go.co.uk"
+        new_company.website = "https://furniture-to-go.co.uk"
+        new_company.insert(ignore_permissions=True)
+    settings.default_company = "Furniture To Go"
+    brand_check = frappe.db.exists('Brand', 'Furniture To Go')
+    if not brand_check:
+        new_brand = frappe.new_doc('Brand')
+        new_brand.brand = "Furniture To Go"
+        new_brand.insert(ignore_permissions=True)
+    settings.default_brand = "Furniture To Go"
+    supplier_check = frappe.db.exists('Supplier', 'Furniture To Go')
+    if not supplier_check:
+        new_supplier = frappe.new_doc('Supplier')
+        new_supplier.supplier_name = "Furniture To Go"
+        new_supplier.country = "United Kingdom"
+        new_supplier.is_internal_supplier = 1
+        new_supplier.represents_company = 'Furniture To Go'
+        new_supplier.supplier_group = "Distributor"
+        new_supplier.supplier_type = "Company"
+        new_supplier.insert(ignore_permissions=True)
+    settings.default_supplier = 'Furniture To Go'
+    settings.default_warehouse = 'Stores - F2G'
+    settings.default_buying_price_list = "Standard Buying"
+    settings.default_selling_price_list = "Standard Selling"
+    settings.save(ignore_permissions=True)
+
 def tester():
-    print('it is working')
+    # print(download_file('https://furniture-to-go.co.uk/files/index/download/id/1411138897/', "Home/Attachments",True))
+    # default_f2g_values()
     # scheduled_f2g_sync()
+    pass
 
 def scheduled_f2g_sync():
     '''This function syncs existing F2G product with F2G website'''
@@ -432,7 +518,6 @@ def find_new_products():
     else:
         print('There is no new products')
 
-
 def product_group_finder():
     group_data = f2g_ins.fetch_category_links()
     group_data_list = group_data.keys()
@@ -476,8 +561,8 @@ def product_range_finder():
     
 def import_products_list(product_links):
     for product_link in product_links:
-        import_product(product_link=product_link)
-        # frappe.enqueue('erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods.import_product',product_link=product_link)
+        # import_product(product_link=product_link)
+        frappe.enqueue('erpnext_furniture_to_go.erpnext_furniture_to_go.doctype.furniture_to_go_settings.furniture_to_go_methods.import_product',product_link=product_link)
 
 def import_product(product_link):
     product_details = f2g_ins.product_data_extractor(product_link)
@@ -529,14 +614,20 @@ def import_product(product_link):
     
     if product_details['product_file']:
         for product_file in product_details['product_file']:
-            item.append('product_attachments',{'attachment_name': product_file['name'],
-                                               'attachment_file': product_file['link']})
+            downloaded_file = download_file(product_file['link'], "Home/Attachments", True)
+            item.append('product_attachments',{'attachment_name': downloaded_file['file_name'],
+                                               'attachment_file': downloaded_file['file_url'],
+                                               'f2g_attachment_file': product_file['link']})
     images = product_details['product_images']
     if images:
-        item.main_image = product_details['product_images'][0]
+        f2g_main_image = product_details['product_images'][0]
+        item.f2g_main_image = f2g_main_image
+        item.main_image = download_file(f2g_main_image)['file_url']
         for i in range(len(images)):
-            item.append('product_images', {'image_name': images[i].rsplit('/', 1)[1],
-                                            'image_file': images[i]})
+            download_image = download_file(images[i])
+            item.append('product_images', {'image_name': download_image['file_name'],
+                                            'image_file': download_image['file_url'],
+                                            'f2g_image_file': images[i]})
     item.description = product_details['product_description']
     price = product_details['prices']
     hd_price = price['home_delivery']
@@ -694,35 +785,63 @@ def sync_product(link, name):
     attachments = item.get_value('product_attachments')
     attachment_list = []
     for each in attachments:
-        attachment_list.append(each.attachment_name)
+        attachment_list.append(each.f2g_attachment_file)
+    change_detected = False
     if product_details['product_file']:
         for product_file in product_details['product_file']:
-            if product_file['name'] in attachment_list:
+            if product_file['link'] in attachment_list:
                 no_change('product_attachement')
             else:
-                item.append('product_attachments',{'attachment_name': product_file['name'],
-                                                'attachment_file': product_file['link']})
-                edited = True
+                change_detected = True
+                break
+                # item.append('product_attachments',{'attachment_name': product_file['name'],
+                #                                 'attachment_file': product_file['link']})
+    
+    if change_detected:
+        item.product_attachments = None
+        for product_file in product_details['product_file']:
+            downloaded_file = download_file(product_file['link'], "Home/Attachments", True)
+            item.append('product_attachments',{'attachment_name': downloaded_file["file_name"],
+                                               'attachment_file': downloaded_file["file_url"],
+                                               'f2g_attachment_file': product_file['link']})
+        edited = True
+    
+    change_detected = False
     images = product_details['product_images']
     # print(images)
     if images:
-        main_image = product_details['product_images'][0]
-        if main_image == item.main_image:
-            no_change('main_image')
-        else:
-            item.main_image = product_details['product_images'][0]
-            edited = True
+        # main_image = product_details['product_images'][0]
+        # if main_image == item.f2g_main_image:
+        #     no_change('main_image')
+        # else:
+            
+        #     item.main_image = product_details['product_images'][0]
+        #     edited = True
         item_images = item.get_value('product_images')
         item_image_list = []
         for each in item_images:
-            item_image_list.append(each.image_file)
+            item_image_list.append(each.f2g_image_file)
         for i in range(len(images)):
             if images[i] in item_image_list:
                 no_change("images")
             else:
-                item.append('product_images', {'image_name': images[i].rsplit('/', 1)[1],
-                                            'image_file': images[i]})
-                edited = True
+                # item.append('product_images', {'image_name': images[i].rsplit('/', 1)[1],
+                #                             'image_file': images[i]})
+                # edited = True
+                change_detected = True
+                break
+    if change_detected:
+        item.product_images = None
+        f2g_main_image = product_details['product_images'][0]
+        item.f2g_main_image = f2g_main_image
+        item.main_image = download_file(f2g_main_image)['file_url']
+        for i in range(len(images)):
+            download_image = download_file(images[i])
+            item.append('product_images', {'image_name': download_image['file_name'],
+                                            'image_file': download_image['file_url'],
+                                            'f2g_image_file': images[i]})
+        edited = True
+
     if item.supplier_url == product_details['product_link']:
         no_change('supplier_url')
     else:

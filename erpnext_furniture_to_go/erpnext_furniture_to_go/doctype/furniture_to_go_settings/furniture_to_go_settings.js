@@ -3,6 +3,5 @@
 
 frappe.ui.form.on('Furniture To Go Settings', {
 	// refresh: function(frm) {
-
 	// }
 });
